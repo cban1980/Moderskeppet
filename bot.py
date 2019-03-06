@@ -1,0 +1,52 @@
+import feedparser
+from bs4 import BeautifulSoup as bs
+import re
+import asyncio
+from discord.ext import commands
+from discord.ext.commands import Bot
+import discord
+from urllib.request import urlopen
+TOKEN = 'NTUyMTEwNTg0MDIwMzM2NjQw.D16wlg.zpO2NQhF_qhjHKPzpcMwq1jqUYA'
+bot = commands.Bot(command_prefix='!')
+
+
+@bot.command(name='spel', pass_context=True)
+async def spel(context, *, arg):
+        playing = arg
+        await bot.change_presence(game=discord.Game(name=arg))
+
+
+@bot.command(name='nt', pass_context=True)
+async def nt(context, arg):
+    d  = feedparser.parse('https://www.nt.se/nyheter/norrkoping/rss/')
+    for post in d.entries[0:int(arg)]:
+        await bot.say(post.title + ": " + post.link + "")
+
+
+@bot.command(name='mat', pass_context=True)
+async def mat(context):
+    storm = urlopen("http://www.stormkoket.se").read().decode("utf-8")
+    soup = bs(storm, 'html.parser')
+    meny1 = soup.find(class_="panel-pane pane-todays-menu").getText()
+    meny2 = re.sub('Visa menyn för denna vecka', '', meny1)
+    await bot.say(meny2)
+
+
+@bot.command(name='serverinvite', pass_context=True)
+async def inv (context):
+    invite = await bot.create_invite(context.message.server, max_uses=1, xkcd=True)
+    await bot.send_message(context.message.author, "Inbjudningsurlen är {}".format(invite.url))
+    await bot.say("Inbjudningslänk genererad! kolla i pm! ")
+
+
+@bot.command(pass_context=True)
+async def rename(ctx, *,name):
+    await bot.edit_profile(username=name)
+
+
+@bot.event
+async def on_ready():
+    print('Inloggad som: ' + bot.user.name)
+
+
+bot.run(TOKEN)
