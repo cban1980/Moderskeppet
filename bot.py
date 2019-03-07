@@ -5,9 +5,14 @@ import asyncio
 from discord.ext import commands
 from discord.ext.commands import Bot
 import discord
+import os
 from urllib.request import urlopen
-TOKEN = 'NTUyMTEwNTg0MDIwMzM2NjQw.D16wlg.zpO2NQhF_qhjHKPzpcMwq1jqUYA'
 bot = commands.Bot(command_prefix='!')
+HOMEDIR = os.path.expanduser('~')
+TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
+
+with open(TOKENHOME + "token.txt", "r") as readfile:
+    TOKEN = readfile.read().strip()
 
 
 @bot.command(name='spel', pass_context=True)
@@ -16,9 +21,15 @@ async def spel(context, *, arg):
         await bot.change_presence(game=discord.Game(name=arg))
 
 
+@bot.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+
 @bot.command(name='nt', pass_context=True)
 async def nt(context, arg):
-    d  = feedparser.parse('https://www.nt.se/nyheter/norrkoping/rss/')
+    d = feedparser.parse('https://www.nt.se/nyheter/norrkoping/rss/')
     for post in d.entries[0:int(arg)]:
         await bot.say(post.title + ": " + post.link + "")
 
