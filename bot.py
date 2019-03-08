@@ -7,6 +7,9 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 import discord
 import os
+import sys
+import requests
+import json
 import wikipedia
 from urllib.request import urlopen
 bot = commands.Bot(command_prefix='!')
@@ -15,6 +18,20 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
+
+
+@bot.command(name='bolaget', pass_context=True)
+async def bolaget(ctx, arg1, *, arg2):
+    adressen = 'https://bolaget.io/v1/products?search="%s&limit=%s"' % (arg2, arg1)
+    adressen =  adressen.replace('"', '')
+    print(adressen)
+    input = requests.get(adressen).json()
+    for i in input:
+        alc = i['alcohol']
+        namn = i['name']
+        addnamn = i['additional_name']
+        pris = i['price']['amount']
+        await bot.say("%s - %s - %s - %s SEK" % (namn, addnamn, alc, pris))
 
 
 @bot.command(name='wiki', pass_context=True)
@@ -65,12 +82,15 @@ async def inv (context):
 
 @bot.command(pass_context=True)
 async def rename(ctx, *,name):
-    await bot.edit_profile(username=name)
+     await bot.edit_profile(username=name)
 
 
 @bot.event
 async def on_ready():
     print('Inloggad som: ' + bot.user.name)
-
+    url_data = requests.get('http://www.fortunecookiemessage.com/').text
+    soup = bs(url_data, 'html.parser')
+    cookie = soup.find(class_ = "cookie-link").getText()
+    await bot.change_presence(game=discord.Game(name=cookie))
 
 bot.run(TOKEN)
