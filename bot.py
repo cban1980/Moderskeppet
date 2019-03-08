@@ -24,7 +24,6 @@ with open(TOKENHOME + "token.txt", "r") as readfile:
 async def bolaget(ctx, arg1, *, arg2):
     adressen = 'https://bolaget.io/v1/products?search="%s&limit=%s"' % (arg2, arg1)
     adressen =  adressen.replace('"', '')
-    print(adressen)
     input = requests.get(adressen).json()
     for i in input:
         alc = i['alcohol']
