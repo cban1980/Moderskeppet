@@ -20,8 +20,15 @@ with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
 
+@bot.command(name='varn', pass_context=True)
+async def varn():
+    adress = 'https://opendata-download-warnings.smhi.se/api/version/2/messages.json'
+    output = requests.get(adress).json()
+    await bot.say(output['message']['text'])
+
+
 @bot.command(name='bolaget', pass_context=True)
-async def bolaget(ctx, arg1, *, arg2):
+async def  bolaget(ctx, arg1, *, arg2):
     adressen = 'https://bolaget.io/v1/products?search="%s&limit=%s"' % (arg2, arg1)
     adressen =  adressen.replace('"', '')
     input = requests.get(adressen).json()
