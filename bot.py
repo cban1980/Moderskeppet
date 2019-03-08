@@ -37,6 +37,16 @@ async def nt(context, arg):
         await bot.say(post.title + ": " + post.link + "")
 
 
+@bot.command(name='svt1', pass_context=True)
+async def svt1(context):
+    svt1 = urlopen("https://www.svtplay.se/kanaler").read().decode("utf-8")
+    soup = bs(svt1, 'html.parser')
+    meny = soup.find(class_ = "play_guide-page-program-list-schedule__link").getText()
+    time = soup.find(class_ = "play_guide-page-program-list-schedule__time").getText()
+    meny = meny[5:]
+    await bot.say("%s %s" % (time, meny))
+
+
 @bot.command(name='mat', pass_context=True)
 async def mat(context):
     storm = urlopen("http://www.stormkoket.se").read().decode("utf-8")
