@@ -1,3 +1,4 @@
+#!/usr/bin/python3.6
 import feedparser
 from bs4 import BeautifulSoup as bs
 import re
@@ -6,6 +7,7 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 import discord
 import os
+import wikipedia
 from urllib.request import urlopen
 bot = commands.Bot(command_prefix='!')
 HOMEDIR = os.path.expanduser('~')
@@ -15,16 +17,17 @@ with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
 
+@bot.command(name='wiki', pass_context=True)
+async def wiki(ctx, *, arg):
+    wikipedia.set_lang("sv")
+    w = wikipedia.summary(arg)
+    await bot.say(w)
+
+
 @bot.command(name='spel', pass_context=True)
 async def spel(context, *, arg):
         playing = arg
         await bot.change_presence(game=discord.Game(name=arg))
-
-
-@bot.event
-async def on_message(message):
-    if message.author == client.user:
-        return
 
 
 @bot.command(name='nt', pass_context=True)
