@@ -19,6 +19,14 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+@bot.command(name='namnsdag', pass_context=True)
+async def namnsdag():
+    namn = requests.get("https://www.dagensnamn.nu").text
+    soup = bs(namn, 'html.parser')
+    dagens = soup.find('h1').getText()
+    await bot.say(dagens)
+
+
 @bot.command(name='polis', pass_context=True)
 async def polis(ctx, *, arg):
     url_data = 'https://polisen.se/api/events?locationname=%s' % (arg)
