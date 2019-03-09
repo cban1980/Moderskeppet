@@ -19,6 +19,14 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+@bot.command(name='polis', pass_context=True)
+async def polis(ctx, *, arg):
+    url_data = 'https://polisen.se/api/events?locationname=%s' % (arg)
+    data = requests.get(url_data).json()
+    for i in data:
+        name = i['name']
+        sum = i['summary']
+        await bot.say("%s %s" % (name, sum))
 
 @bot.command(name='varn', pass_context=True)
 async def varn():
@@ -28,7 +36,7 @@ async def varn():
 
 
 @bot.command(name='bolaget', pass_context=True)
-async def  bolaget(ctx, arg1, *, arg2):
+async def  bolaget(ctx, arg1, * , arg2):
     adressen = 'https://bolaget.io/v1/products?search="%s&limit=%s"' % (arg2, arg1)
     adressen =  adressen.replace('"', '')
     input = requests.get(adressen).json()
@@ -41,7 +49,7 @@ async def  bolaget(ctx, arg1, *, arg2):
 
 
 @bot.command(name='wiki', pass_context=True)
-async def wiki(ctx, *, arg):
+async def wiki(ctx, *, arg): 
     wikipedia.set_lang("sv")
     w = wikipedia.summary(arg)
     await bot.say(w)
