@@ -1,5 +1,5 @@
 #!/usr/bin/python3.6
-import feedparser 
+import feedparser
 from bs4 import BeautifulSoup as bs
 import re
 import asyncio
@@ -12,6 +12,7 @@ import requests
 import json
 import wikipedia
 from urllib.request import urlopen
+
 bot = commands.Bot(command_prefix='!')
 HOMEDIR = os.path.expanduser('~')
 TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
@@ -21,12 +22,12 @@ with open(TOKENHOME + "token.txt", "r") as readfile:
 
 
 @bot.command(name='eqauc', pass_context=True)
-async def eqauc(ctx, arg1, * , arg2):
-    argu = re.sub(' ', '+', arg2) 
+async def eqauc(ctx, arg1, *, arg2):
+    argu = re.sub(' ', '+', arg2)
     adressen = 'http://ahungry.com/action/eq/item-detail/%s' % (argu)
     url_output = requests.get(adressen).text
     soup = bs(url_output, 'lxml')
-    auctions = soup.find_all(class_ = "item-detail-auctions")
+    auctions = soup.find_all(class_="item-detail-auctions")
     g = ""
     for i in auctions[0:int(arg1)]:
         g += i.getText().rstrip()
@@ -43,7 +44,7 @@ async def namnsdag():
 
 
 @bot.command(name='polis', pass_context=True)
-async def polis( ctx, *, arg):
+async def polis(ctx, *, arg):
     url_data = 'https://polisen.se/api/events?locationname=%s' % (arg)
     data = requests.get(url_data).json()
     for i in data:
@@ -51,17 +52,18 @@ async def polis( ctx, *, arg):
         sum = i['summary']
         await bot.say("%s %s" % (name, sum))
 
+
 @bot.command(name='varn', pass_context=True)
-async def varn( ):
+async def varn():
     adress = 'https://opendata-download-warnings.smhi.se/api/version/2/messages.json'
     output = requests.get(adress).json()
     await bot.say("```html\n" + output['message']['text'] + "```")
 
 
 @bot.command(name='bolaget', pass_context=True)
-async def  bolaget(ctx, arg1, * , arg2):
+async def bolaget(ctx, arg1, *, arg2):
     adressen = 'https://bolaget.io/v1/products?search="%s&limit=%s"' % (arg2, arg1)
-    adressen =  adressen.replace('"', '')
+    adressen = adressen.replace('"', '')
     input = requests.get(adressen).json()
     for i in input:
         alc = i['alcohol']
@@ -72,7 +74,7 @@ async def  bolaget(ctx, arg1, * , arg2):
 
 
 @bot.command(name='wiki', pass_context=True)
-async def wiki(ctx, *, arg): 
+async def wiki(ctx, *, arg):
     wikipedia.set_lang("sv")
     w = wikipedia.summary(arg)
     await bot.say(w)
@@ -80,8 +82,8 @@ async def wiki(ctx, *, arg):
 
 @bot.command(name='spel', pass_context=True)
 async def spel(context, *, arg):
-        playing = arg
-        await  bot.change_presence(game=discord.Game(name=arg))
+    playing = arg
+    await  bot.change_presence(game=discord.Game(name=arg))
 
 
 @bot.command(name='nt', pass_context=True)
@@ -95,8 +97,8 @@ async def nt(context, arg):
 async def svt1(context):
     svt1 = urlopen("https://www.svtplay.se/kanaler").read().decode("utf-8")
     soup = bs(svt1, 'html.parser')
-    meny = soup.find(class_ = "play_guide-page-program-list-schedule__link").getText()
-    time = soup.find(class_ = "play_guide-page-program-list-schedule__time").getText()
+    meny = soup.find(class_="play_guide-page-program-list-schedule__link").getText()
+    time = soup.find(class_="play_guide-page-program-list-schedule__time").getText()
     meny = meny[5:]
     await bot.say("%s %s" % (time, meny))
 
@@ -118,16 +120,17 @@ async def inv(context):
 
 
 @bot.command(pass_context=True)
-async def rename(ctx, *,name):
-     await bot.edit_profile(username=name)
+async def rename(ctx, *, name):
+    await bot.edit_profile(username=name)
 
 
 @bot.event
-async def on_ready(): 
+async def on_ready():
     print('Inloggad som: ' + bot.user.name)
     url_data = requests.get('http://www.fortunecookiemessage.com/').text
     soup = bs(url_data, 'html.parser')
-    cookie = soup.find(class_ = "cookie-link").getText()
+    cookie = soup.find(class_="cookie-link").getText()
     await bot.change_presence(game=discord.Game(name=cookie))
+
 
 bot.run(TOKEN)
