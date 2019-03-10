@@ -30,8 +30,8 @@ async def eqauc(ctx, arg1, * , arg2):
     g = ""
     for i in auctions[0:int(arg1)]:
         g += i.getText().rstrip()
-    await bot.send_message(ctx.message.author, "🇷​🇪​🇸​🇺​🇱​🇹​🇸​" "```css\n" + g + "```")
-    await bot.say("Auction search finished, check your PM!")
+    g = re.sub('auctions,', '', g)
+    await bot.say(ctx.message.author.mention + " -> 🇷​🇪​🇸​🇺​🇱​🇹​🇸​" "```css\n" + g + "```")
 
 
 @bot.command(name='namnsdag', pass_context=True)
@@ -55,7 +55,7 @@ async def polis( ctx, *, arg):
 async def varn( ):
     adress = 'https://opendata-download-warnings.smhi.se/api/version/2/messages.json'
     output = requests.get(adress).json()
-    await bot.say(output['message']['text'])
+    await bot.say("```html\n" + output['message']['text'] + "```")
 
 
 @bot.command(name='bolaget', pass_context=True)
