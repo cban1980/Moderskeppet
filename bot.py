@@ -19,6 +19,7 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+
 @bot.command(name='eqauc', pass_context=True)
 async def eqauc(ctx, arg1, * , arg2):
     argu = re.sub(' ', '+', arg2) 
@@ -28,11 +29,10 @@ async def eqauc(ctx, arg1, * , arg2):
     auctions = soup.find_all(class_ = "item-detail-auctions")
     g = ""
     for i in auctions[0:int(arg1)]:
-        g += i.getText()
-    re.sub('\n', '', g)
-    embed = discord.Embed(title="**Fresh from the tunnel!**", description="**Returned matches for**: " + arg2 , color=0xf9d77e)
-    embed.add_field(name="**Results:** " + arg1.strip(), value=g, inline=False)
-    embed.set_footer(text="<-- Sexy ogre!", icon_url="http://i45.tinypic.com/2gvsqq1.png")
+        g += i.getText().rstrip()
+    embed = discord.Embed(title="💰 ஜ۩۞۩ஜ 🇷​🇪​🇸​🇺​🇱​🇹​🇸​ ஜ۩۞۩ஜ💰", description="**Searchterms**: " + arg2 , color=0xf9d77e)
+    embed.add_field(name="👇", value=g, inline=True)
+    embed.set_footer(text="❤️", icon_url="http://i45.tinypic.com/2gvsqq1.png")
     await bot.send_message(ctx.message.author, embed=embed)
     await bot.say("Auction search finished, check your PM!")
 
