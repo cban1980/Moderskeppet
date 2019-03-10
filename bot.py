@@ -29,9 +29,9 @@ async def eqauc(ctx, arg1, * , arg2):
     auctions = soup.find_all(class_ = "item-detail-auctions")
     g = ""
     for i in auctions[0:int(arg1)]:
-        g += i.getText().rstrip()
-    embed = discord.Embed(title="💰 ஜ۩۞۩ஜ 🇷​🇪​🇸​🇺​🇱​🇹​🇸​ ஜ۩۞۩ஜ💰", description="**Searchterms**: " + arg2 , color=0xf9d77e)
-    embed.add_field(name="👇", value=g, inline=True)
+        g += i.getText().rstrip().lstrip()
+    embed = discord.Embed(title="💰 ஜ۩۞۩ஜ 🇷​🇪​🇸​🇺​🇱​🇹​🇸​ ஜ۩۞۩ஜ💰",  color=0xf9d77e)
+    embed.add_field(name="**𝙎𝙚𝙖𝙧𝙘𝙝:** " + '__' + arg2 + '__', value= '**' + g + '**' , inline=True)
     embed.set_footer(text="❤️", icon_url="http://i45.tinypic.com/2gvsqq1.png")
     await bot.send_message(ctx.message.author, embed=embed)
     await bot.say("Auction search finished, check your PM!")
