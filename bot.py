@@ -1,5 +1,5 @@
 #!/usr/bin/python3.6
-import feedparser
+import feedparser 
 from bs4 import BeautifulSoup as bs
 import re
 import asyncio
@@ -19,6 +19,24 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+@bot.command(name='eqauc', pass_context=True)
+async def eqauc(ctx, arg1, * , arg2):
+    argu = re.sub(' ', '+', arg2) 
+    adressen = 'http://ahungry.com/action/eq/item-detail/%s' % (argu)
+    url_output = requests.get(adressen).text
+    soup = bs(url_output, 'lxml')
+    auctions = soup.find_all(class_ = "item-detail-auctions")
+    g = ""
+    for i in auctions[0:int(arg1)]:
+        g += i.getText()
+    re.sub('\n', '', g)
+    embed = discord.Embed(title="**Fresh from the tunnel!**", description="**Returned matches for**: " + arg2 , color=0xf9d77e)
+    embed.add_field(name="**Results:** " + arg1.strip(), value=g, inline=False)
+    embed.set_footer(text="<-- Sexy ogre!", icon_url="http://i45.tinypic.com/2gvsqq1.png")
+    await bot.send_message(ctx.message.author, embed=embed)
+    await bot.say("Auction search finished, check your PM!")
+
+
 @bot.command(name='namnsdag', pass_context=True)
 async def namnsdag():
     namn = requests.get("https://www.dagensnamn.nu").text
@@ -28,7 +46,7 @@ async def namnsdag():
 
 
 @bot.command(name='polis', pass_context=True)
-async def polis(ctx, *, arg):
+async def polis( ctx, *, arg):
     url_data = 'https://polisen.se/api/events?locationname=%s' % (arg)
     data = requests.get(url_data).json()
     for i in data:
@@ -37,7 +55,7 @@ async def polis(ctx, *, arg):
         await bot.say("%s %s" % (name, sum))
 
 @bot.command(name='varn', pass_context=True)
-async def varn():
+async def varn( ):
     adress = 'https://opendata-download-warnings.smhi.se/api/version/2/messages.json'
     output = requests.get(adress).json()
     await bot.say(output['message']['text'])
@@ -66,7 +84,7 @@ async def wiki(ctx, *, arg):
 @bot.command(name='spel', pass_context=True)
 async def spel(context, *, arg):
         playing = arg
-        await bot.change_presence(game=discord.Game(name=arg))
+        await  bot.change_presence(game=discord.Game(name=arg))
 
 
 @bot.command(name='nt', pass_context=True)
@@ -96,7 +114,7 @@ async def mat(context):
 
 
 @bot.command(name='serverinvite', pass_context=True)
-async def inv (context):
+async def inv(context):
     invite = await bot.create_invite(context.message.server, max_uses=1, xkcd=True)
     await bot.send_message(context.message.author, "Inbjudningsurlen är {}".format(invite.url))
     await bot.say("Inbjudningslänk genererad! kolla i pm! ")
@@ -108,7 +126,7 @@ async def rename(ctx, *,name):
 
 
 @bot.event
-async def on_ready():
+async def on_ready(): 
     print('Inloggad som: ' + bot.user.name)
     url_data = requests.get('http://www.fortunecookiemessage.com/').text
     soup = bs(url_data, 'html.parser')
