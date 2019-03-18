@@ -1,4 +1,4 @@
-#!/usr/bin/python3.6
+#!/usr/bin/env python3
 import feedparser
 from bs4 import BeautifulSoup as bs
 import re
@@ -20,13 +20,20 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+@bot.command(name='tobbe', pass_context=True)
+async def tobbe(ctx):
+    url_data = requests.get('http://www.oscarshall.se/empty_8.html').text
+    soup = bs(url_data, 'html.parser')
+    maten = soup.find("div", class_ = "ParagraphContainer")
+    await bot.say(maten.getText().rstrip().lstrip())
 
+    
 @bot.command(name='eqauc', pass_context=True)
 async def eqauc(ctx, arg1, *, arg2):
     argu = re.sub(' ', '+', arg2)
     adressen = 'http://ahungry.com/action/eq/item-detail/%s' % (argu)
     url_output = requests.get(adressen).text
-    soup = bs(url_output, 'lxml')
+    soup = bs(url_output, 'html5lib')
     auctions = soup.find_all(class_="item-detail-auctions")
     g = ""
     for i in auctions[0:int(arg1)]:
