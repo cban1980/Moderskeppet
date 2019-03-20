@@ -12,7 +12,7 @@ import requests
 import json
 import wikipedia
 from urllib.request import urlopen
-
+import random
 bot = commands.Bot(command_prefix='!')
 HOMEDIR = os.path.expanduser('~')
 TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
@@ -20,6 +20,13 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+@bot.command(name='why', pass_context=True)
+async def why(ctx):
+    url_data = requests.get('http://pages.cs.wisc.edu/~ballard/bofh/excuses').text
+    soup = bs(url_data, 'html.parser')
+    for line in soup:
+        soppa = line.splitlines()
+    await bot.say(random.choice(soppa))
 
 @bot.command(name='tobbe', pass_context=True)
 async def tobbe(ctx):
@@ -73,7 +80,6 @@ async def varn():
 async def blocket(ctx, arg, arg1, *,  arg2):
     arg2 = re.sub(' ', '+', arg2) 
     adressen = 'https://blocket.nyh.name/%s?q=%s' % (arg, arg2)
-    print(adressen)
     d = feedparser.parse(adressen)
     for post in d.entries[0:int(arg1)]:
       await  bot.say(post.title + ": " + post.link + "")
