@@ -20,8 +20,18 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+
+@bot.command(name='why', pass_context=True)
+async def why(ctx):
+    url_data = requests.get('http://pages.cs.wisc.edu/~ballard/bofh/excuses').text
+    soup = bs(url_data, 'html.parser')
+    for line in soup:
+    	soppa = line.splitlines()
+await boy.say(random.choice(soppa))
+
+
 @bot.command(name='tobbe', pass_context=True)
-async def tobbe(ctx):
+ async def tobbe(ctx):
     url_data = requests.get('http://www.oscarshall.se/empty_8.html').text
     soup = bs(url_data, 'html.parser')
     maten = soup.find("div", class_ = "ParagraphContainer")
