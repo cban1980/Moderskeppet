@@ -26,7 +26,9 @@ async def tobbe(ctx):
     url_data = requests.get('http://www.oscarshall.se/empty_8.html').text
     soup = bs(url_data, 'html.parser')
     maten = soup.find("div", class_ = "ParagraphContainer")
-    await bot.say("```css\n" + maten.getText().rstrip().lstrip() + "```")
+    maten = maten.getText().rstrip().lstrip()
+    maten = re.sub("(?s)99(.*$)", " ", maten)
+    await bot.say("```css\n" + maten + "```")
 
     
 @bot.command(name='eqauc', pass_context=True)
