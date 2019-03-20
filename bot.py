@@ -69,10 +69,18 @@ async def varn():
     output = requests.get(adress).json()
     await bot.say("```html\n" + output['message']['text'] + "```")
 
+@bot.command(name='blocket', pass_context=True)
+async def blocket(ctx, arg, arg1, *,  arg2):
+    arg2 = re.sub(' ', '+', arg2) 
+    adressen = 'https://blocket.nyh.name/%s?q=%s' % (arg, arg2)
+    print(adressen)
+    d = feedparser.parse(adressen)
+    for post in d.entries[0:int(arg1)]:
+      await  bot.say(post.title + ": " + post.link + "")
 
 @bot.command(name='bolaget', pass_context=True)
 async def bolaget(ctx, arg1, *, arg2):
-    adressen = 'https://bolaget.io/v1/products?search="%s&limit=%s"' % (arg2, arg1)
+    adressen = 'https://bolaget.io/v1/products?search=%s&limit=%s' % (arg2, arg1)
     adressen = adressen.replace('"', '')
     input = requests.get(adressen).json()
     for i in input:
