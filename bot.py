@@ -20,6 +20,12 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+def cssformat(input):
+    return "```css\n" + input + "```"
+
+def htmlformat(input):
+    return "```html\n" + input + "```"
+
 @bot.command(name='why', pass_context=True)
 async def why(ctx):
     url_data = requests.get('http://pages.cs.wisc.edu/~ballard/bofh/excuses').text
@@ -35,7 +41,7 @@ async def tobbe(ctx):
     maten = soup.find("div", class_ = "ParagraphContainer")
     maten = maten.getText().rstrip().lstrip()
     maten = re.sub("(?s)99(.*$)", " ", maten)
-    await bot.say("```css\n" + maten + "```")
+    await bot.say(cssformat(maten))
 
     
 @bot.command(name='eqauc', pass_context=True)
@@ -49,7 +55,7 @@ async def eqauc(ctx, arg1, *, arg2):
     for i in auctions[0:int(arg1)]:
         g += i.getText().rstrip()
     g = re.sub('auctions,', '', g)
-    await bot.say(ctx.message.author.mention + " -> 🇷​🇪​🇸​🇺​🇱​🇹​🇸​" "```css\n" + g + "```")
+    await bot.say(ctx.message.author.mention + " -> 🇷<200b>🇪<200b>🇸<200b>🇺<200b>🇱<200b>🇹<200b>🇸<200b>" "```css\n" + g + "```")
 
 
 @bot.command(name='namnsdag', pass_context=True)
@@ -74,7 +80,8 @@ async def polis(ctx, *, arg):
 async def varn():
     adress = 'https://opendata-download-warnings.smhi.se/api/version/2/messages.json'
     output = requests.get(adress).json()
-    await bot.say("```html\n" + output['message']['text'] + "```")
+    await bot.say(htmlformat(output))
+
 
 @bot.command(name='blocket', pass_context=True)
 async def blocket(ctx, arg, arg1, *,  arg2):
@@ -94,7 +101,7 @@ async def bolaget(ctx, arg1, *, arg2):
         namn = i['name']
         addnamn = i['additional_name']
         pris = i['price']['amount']
-        await bot.say("%s - %s - %s - %s SEK" % (namn, addnamn, alc, pris))
+        await bot.say(cssformat(("%s - %s - %s - %s SEK" % (namn, addnamn, alc, pris))))
 
 
 @bot.command(name='wiki', pass_context=True)
@@ -133,7 +140,7 @@ async def mat(context):
     soup = bs(storm, 'html.parser')
     meny1 = soup.find(class_="panel-pane pane-todays-menu").getText()
     meny2 = re.sub('Visa menyn för denna vecka', '', meny1)
-    await bot.say(meny2)
+    await bot.say(htmlformat(meny2))
 
 
 @bot.command(name='serverinvite', pass_context=True)
