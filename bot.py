@@ -20,11 +20,14 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+
 def cssformat(input):
     return "```css\n" + input + "```"
 
+
 def htmlformat(input):
     return "```html\n" + input + "```"
+
 
 @bot.command(name='why', pass_context=True)
 async def why(ctx):
@@ -77,10 +80,11 @@ async def polis(ctx, *, arg):
 
 
 @bot.command(name='varn', pass_context=True)
-async def varn():
+async def varn(ctx):
     adress = 'https://opendata-download-warnings.smhi.se/api/version/2/messages.json'
     output = requests.get(adress).json()
-    await bot.say(htmlformat(output))
+    output = json.dumps(output)
+    await bot.say(htmlformat(output['message']['text']))
 
 
 @bot.command(name='blocket', pass_context=True)
@@ -90,6 +94,7 @@ async def blocket(ctx, arg, arg1, *,  arg2):
     d = feedparser.parse(adressen)
     for post in d.entries[0:int(arg1)]:
       await  bot.say(post.title + ": " + post.link + "")
+
 
 @bot.command(name='bolaget', pass_context=True)
 async def bolaget(ctx, arg1, *, arg2):
@@ -101,7 +106,7 @@ async def bolaget(ctx, arg1, *, arg2):
         namn = i['name']
         addnamn = i['additional_name']
         pris = i['price']['amount']
-        await bot.say(cssformat(("%s - %s - %s - %s SEK" % (namn, addnamn, alc, pris))))
+        await bot.say(cssformat(( "%s - %s - %s - %s SEK" % (namn, addnamn, alc, pris))))
 
 
 @bot.command(name='wiki', pass_context=True)
