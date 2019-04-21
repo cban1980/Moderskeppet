@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import feedparser
+import feedparser 
 from bs4 import BeautifulSoup as bs
 import re
 import asyncio
@@ -44,11 +44,21 @@ async def tobbe(ctx):
     maten = soup.find("div", class_ = "ParagraphContainer")
     maten = maten.getText().rstrip().lstrip()
     maten = re.sub("(?s)99(.*$)", " ", maten)
-    await bot.say(cssformat(maten))
+    await bot.say(htmlformat(maten))
 
-    
+
+@bot.command(name='pproxy', pass_context=True)
+async def pproxy(ctx):
+    url_data = requests.get('https://proxybay.ist/').text
+    soup = bs(url_data, 'html.parser')
+    sites = []
+    for tag in soup.findAll( class_ = "t1", href=True ):
+        sites += tag['href'].splitlines()
+    await bot.say(htmlformat(random.choice(sites)))
+
+
 @bot.command(name='eqauc', pass_context=True)
-async def eqauc(ctx, arg1, *, arg2):
+ async def eqauc(ctx, arg1, *, arg2):
     argu = re.sub(' ', '+', arg2)
     adressen = 'http://ahungry.com/action/eq/item-detail/%s' % (argu)
     url_output = requests.get(adressen).text
@@ -145,7 +155,7 @@ async def mat(context):
     soup = bs(storm, 'html.parser')
     meny1 = soup.find(class_="panel-pane pane-todays-menu").getText()
     meny2 = re.sub('Visa menyn för denna vecka', '', meny1)
-    await bot.say(htmlformat(meny2))
+    await bot.say( htmlformat(meny2))
 
 
 @bot.command(name='serverinvite', pass_context=True)
