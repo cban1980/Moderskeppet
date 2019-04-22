@@ -54,11 +54,11 @@ async def pproxy(ctx):
     sites = []
     for tag in soup.findAll( class_ = "t1", href=True ):
         sites += tag['href'].splitlines()
-    await bot.say(htmlformat(random.choice(sites)))
+    await bot.say(random.choice(sites))
 
 
 @bot.command(name='eqauc', pass_context=True)
- async def eqauc(ctx, arg1, *, arg2):
+async def eqauc(ctx, arg1, *, arg2):
     argu = re.sub(' ', '+', arg2)
     adressen = 'http://ahungry.com/action/eq/item-detail/%s' % (argu)
     url_output = requests.get(adressen).text
