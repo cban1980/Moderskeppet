@@ -1,8 +1,0 @@
-  File "/home/zphinx/Moderskeppet/bot.py", line 61
-    async def eqauc(ctx, arg1, *, arg2):
-    ^
-IndentationError: unexpected indent
-  File "/home/zphinx/Moderskeppet/bot.py", line 61
-    async def eqauc(ctx, arg1, *, arg2):
-    ^
-IndentationError: unexpected indent

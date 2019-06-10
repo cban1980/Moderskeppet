@@ -13,6 +13,7 @@ import json
 import wikipedia
 from urllib.request import urlopen
 import random
+import praw
 bot = commands.Bot(command_prefix='!')
 HOMEDIR = os.path.expanduser('~')
 TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
@@ -28,6 +29,18 @@ def cssformat(input):
 def htmlformat(input):
     return "```html\n" + input + "```"
 
+
+@bot.command(name='reddit', pass_context=True)
+async def reddit(ctx,arg, arg1, arg2):
+    nummer = int(arg)
+    subred = arg1
+    patter = str(arg2)
+    rewdit = praw.Reddit('Bengt', user_agent='Redditboten Bengt')
+    for submission in rewdit.subreddit(subred).search("title:" + patter, limit=nummer):
+        a = submission.title
+        b = submission.url
+        c = " ".join([a, b])
+        await bot.say(c)
 
 @bot.command(name='why', pass_context=True)
 async def why(ctx):
