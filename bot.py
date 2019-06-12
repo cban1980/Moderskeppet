@@ -34,7 +34,7 @@ def htmlformat(input):
 async def on_message(message):
     if message.content.lower().startswith('!hjalp'):
         commands={}
-        commands['!reddit']='!reddit <nummer> <subreddit> <sökterm>. Hämtar definerat antal matchningar från definerad subreddit.abs'
+        commands['!reddit']='!reddit <nummer> <subreddit> <sökterm>. Hämtar definerat antal matchningar från definerad subreddit'
         commands['!tobbe']='Postar Tobbes veckomeny full med Aioli.'
         commands['!!pproxy']='Random proxy för TPB'
         commands['!eqauc']='!eqauc <nummer> <söktermer>. Sökfunktion för ahungry.com/eqauctions'
