@@ -53,7 +53,7 @@ async def on_message(message):
         commands['!why']='Randomiserad BOFH reason.'
         msg=discord.Embed(title='𝐃𝐢𝐬𝐜𝐨𝐫𝐝𝐛𝐨𝐭𝐞𝐧 𝐁𝐞𝐧𝐠𝐭', color=0x008000)
         for command,description in commands.items():
-            msg.add_field(name=command,value=description, inline=False)
+            msg.add_field(name=command,value=htmlformat(description), inline=False)
         await bot.send_message(message.channel, embed=msg)
 
 
