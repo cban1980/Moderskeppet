@@ -30,12 +30,39 @@ def htmlformat(input):
     return "```html\n" + input + "```"
 
 
+@bot.event
+async def on_message(message):
+    if message.content.lower().startswith('!hjalp'):
+        commands={}
+        commands['!reddit']='!reddit <nummer> <subreddit> <sökterm>. Hämtar definerat antal matchningar från definerad subreddit.abs'
+        commands['!tobbe']='Postar Tobbes veckomeny full med Aioli.'
+        commands['!!pproxy']='Random proxy för TPB'
+        commands['!eqauc']='!eqauc <nummer> <söktermer>. Sökfunktion för ahungry.com/eqauctions'
+        commands['!polis']="!polis <stad>. Hämtar hem registrerade händelser för polisen från det senaste dygnet i <stad>"
+        commands['!varn']='Aktuella SMHI varningar.'
+        commands['!namnsdag']='Dagens namn.'
+        commands['!blocket']='!blocket <område> <nummer> <söktermer>. Sökfunktion för blocket annonser.'
+        commands['!bolaget']='!bolaget <nummer> <namn>. Sökfunktion för drycker på systembolaget.'
+        commands['!wiki']='!wiki <sökterm>. Sökfunktion för den svenska wikipedian.'
+        commands['!spel']='!spel <spel>. Byter Bengts Now Playing.'
+        commands['!svt']='Now playing på Svt1.'
+        commands['!nt']='!nt <nummer>. Visar nya <nummer> nyheter från NT.se.'
+        commands['!mat']='Dagens meny på SMHIs stormkök.' 
+        commands['!serverinvite']='Autogenererad invitelänk till Ninjaz servern, skickas i PM.' 
+        commands['!namn']='Byter namn på Bengt.'
+        commands['!why']='Randomiserad BOFH reason.'
+        msg=discord.Embed(title='𝐃𝐢𝐬𝐜𝐨𝐫𝐝𝐛𝐨𝐭𝐞𝐧 𝐁𝐞𝐧𝐠𝐭', color=0x008000)
+        for command,description in commands.items():
+            msg.add_field(name=command,value=description, inline=False)
+        await bot.send_message(message.channel, embed=msg)
+
+
 @bot.command(name='reddit', pass_context=True)
 async def reddit(ctx,arg, arg1, arg2):
     nummer = int(arg)
     subred = arg1
     patter = str(arg2)
-    rewdit = praw.Reddit('Bengt', user_agent='Redditboten Bengt')
+    rewdit = praw.Reddit('Bengt', user_agent='Discordboten Bengt')
     for submission in rewdit.subreddit(subred).search("title:" + patter, limit=nummer):
         a = submission.title
         b = submission.url
@@ -93,7 +120,7 @@ async def namnsdag():
 
 
 @bot.command(name='polis', pass_context=True)
-async def polis(ctx, *, arg):
+async def polis(ctx, *, arg): 
     url_data = 'https://polisen.se/api/events?locationname=%s' % (arg)
     data = requests.get(url_data).json()
     for i in data:
@@ -116,7 +143,7 @@ async def blocket(ctx, arg, arg1, *,  arg2):
     adressen = 'https://blocket.nyh.name/%s?q=%s' % (arg, arg2)
     d = feedparser.parse(adressen)
     for post in d.entries[0:int(arg1)]:
-      await  bot.say(post.title + ": " + post.link + "")
+      await  bot.say(post.title + ": " + post.link + "") 
 
 
 @bot.command(name='bolaget', pass_context=True)
@@ -129,7 +156,7 @@ async def bolaget(ctx, arg1, *, arg2):
         namn = i['name']
         addnamn = i['additional_name']
         pris = i['price']['amount']
-        await bot.say(cssformat(( "%s - %s - %s - %s SEK" % (namn, addnamn, alc, pris))))
+        await bot.say(cssformat(( "%s - %s - %s - %s SEK" % ( namn, addnamn, alc, pris))))
 
 
 @bot.command(name='wiki', pass_context=True)
