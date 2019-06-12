@@ -69,6 +69,7 @@ async def reddit(ctx,arg, arg1, arg2):
         c = " ".join([a, b])
         await bot.say(c)
 
+
 @bot.command(name='why', pass_context=True)
 async def why(ctx):
     url_data = requests.get('http://pages.cs.wisc.edu/~ballard/bofh/excuses').text
@@ -76,6 +77,7 @@ async def why(ctx):
     for line in soup:
         soppa = line.splitlines()
     await bot.say(random.choice(soppa))
+
 
 @bot.command(name='tobbe', pass_context=True)
 async def tobbe(ctx):
@@ -108,7 +110,7 @@ async def eqauc(ctx, arg1, *, arg2):
     for i in auctions[0:int(arg1)]:
         g += i.getText().rstrip()
     g = re.sub('auctions,', '', g)
-    await bot.say(ctx.message.author.mention + " -> 🇷<200b>🇪<200b>🇸<200b>🇺<200b>🇱<200b>🇹<200b>🇸<200b>" "```css\n" + g + "```")
+    await bot.say(ctx.message.author.mention + " -> 𝐑𝐄𝐒𝐔𝐋𝐓𝐒" "```css\n" + g + "```")
 
 
 @bot.command(name='namnsdag', pass_context=True)
