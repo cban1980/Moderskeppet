@@ -21,6 +21,8 @@ TOKENHOME = "%s/.Moderskeppet/" % (HOMEDIR)
 with open(TOKENHOME + "token.txt", "r") as readfile:
     TOKEN = readfile.read().strip()
 
+bot.remove_command('help')
+
 
 def cssformat(input):
     return "```css\n" + input + "```"
@@ -30,32 +32,28 @@ def htmlformat(input):
     return "```html\n" + input + "```"
 
 
-@bot.event
-async def on_message(message):
-    if message.content.lower().startswith('!hjalp'):
-        commands={}
-        commands['!reddit']='!reddit <nummer> <subreddit> <sökterm>. Hämtar definerat antal matchningar från definerad subreddit'
-        commands['!tobbe']='Postar Tobbes veckomeny full med Aioli.'
-        commands['!!pproxy']='Random proxy för TPB'
-        commands['!eqauc']='!eqauc <nummer> <söktermer>. Sökfunktion för ahungry.com/eqauctions'
-        commands['!polis']="!polis <stad>. Hämtar hem registrerade händelser för polisen från det senaste dygnet i <stad>"
-        commands['!varn']='Aktuella SMHI varningar.'
-        commands['!namnsdag']='Dagens namn.'
-        commands['!blocket']='!blocket <område> <nummer> <söktermer>. Sökfunktion för blocket annonser.'
-        commands['!bolaget']='!bolaget <nummer> <namn>. Sökfunktion för drycker på systembolaget.'
-        commands['!wiki']='!wiki <sökterm>. Sökfunktion för den svenska wikipedian.'
-        commands['!spel']='!spel <spel>. Byter Bengts Now Playing.'
-        commands['!svt']='Now playing på Svt1.'
-        commands['!nt']='!nt <nummer>. Visar nya <nummer> nyheter från NT.se.'
-        commands['!mat']='Dagens meny på SMHIs stormkök.' 
-        commands['!serverinvite']='Autogenererad invitelänk till Ninjaz servern, skickas i PM.' 
-        commands['!namn']='Byter namn på Bengt.'
-        commands['!why']='Randomiserad BOFH reason.'
-        msg=discord.Embed(title='𝐃𝐢𝐬𝐜𝐨𝐫𝐝𝐛𝐨𝐭𝐞𝐧 𝐁𝐞𝐧𝐠𝐭', color=0x008000)
-        for command,description in commands.items():
-            msg.set_thumbnail(url="http://www.2pnews.com/wp-content/uploads/2013/04/hans-freekok.jpg")
-            msg.add_field(name=command,value=htmlformat(description), inline=False)
-        await bot.send_message(message.channel, embed=msg)
+@bot.command(name='hjalp', pass_context=True)
+async def hjalp(ctx):
+    embed = discord.Embed(title="𝐃𝐢𝐬𝐜𝐨𝐫𝐝𝐛𝐨𝐭𝐞𝐧 𝐁𝐞𝐧𝐠𝐭", description="Kommandolista:", color=0xeee657)
+    embed.add_field(name="!reddit", value="!reddit <nummer> <subreddit> <sökterm>. Hämtar definerat antal matchningar från definerad subreddit", inline=False)
+    embed.add_field(name="!tobbe", value="Postar Tobbes veckomeny full med Aioli.", inline=False)
+    embed.add_field(name="!pproxy", value="Random proxy för TPB", inline=False)
+    embed.add_field(name="eqauc", value="!eqauc <nummer> <söktermer>. Sökfunktion för ahungry.com/eqauctions", inline=False)
+    embed.add_field(name="!polis", value="!polis <stad>. Hämtar hem registrerade händelser för polisen från det senaste dygnet i <stad>", inline=False)
+    embed.add_field(name="!namnsdag", value="Dagens namn.", inline=False)
+    embed.add_field(name="!blocket", value="!blocket <område> <nummer> <söktermer>. Sökfunktion för blocket annonser.", inline=False)
+    embed.add_field(name="!bolaget", value="!bolaget <nummer> <namn>. Sökfunktion för drycker på systembolaget.", inline=False)
+    embed.add_field(name="!wiki", value="!wiki <sökterm>. Sökfunktion för wikipedia.", inline=False)
+    embed.add_field(name="!spel", value="!spel <spel>. Byter Bengts Now Playing.", inline=False)
+    embed.add_field(name="!svt", value="Now playing på Svt1.", inline=False)
+    embed.add_field(name="!nt", value="!nt <nummer>. Visar nya <nummer> nyheter från NT.se.", inline=False)
+    embed.add_field(name="!mat", value="Dagens meny på SMHIs stormkök.", inline=False)
+    embed.add_field(name="!serverinvite", value="Autogenererad invitelänk till Ninjaz servern, skickas i PM.", inline=False)
+    embed.add_field(name="!namn", value="Byter namn på Bengt.", inline=False)
+    embed.add_field(name="!why", value="Randomiserad BOFH reason.", inline=False) 
+    embed.add_field(name="!varn", value="Aktuella SMHI varningar.", inline=False)
+    embed.set_thumbnail(url="http://www.2pnews.com/wp-content/uploads/2013/04/hans-freekok.jpg")
+    await bot.say(embed=embed)
 
 
 @bot.command(name='reddit', pass_context=True)
