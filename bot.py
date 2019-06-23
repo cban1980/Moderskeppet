@@ -38,7 +38,9 @@ async def fkramp(ctx):
     soppa = soup.find("table", class_="box")
     soppa = soppa.getText()
     soppa = re.sub("(?s)Inskickat(.*$)", " ", soppa)
-    await bot.say(htmlformat(soppa.lstrip().rstrip))
+    soppa = re.sub(r"""\s+$""", '', soppa) 
+    soppa = htmlformat(soppa)
+    await bot.say(soppa.rstrip())
 
 
 @bot.command(name='hjalp', pass_context=True)
