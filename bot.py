@@ -31,6 +31,15 @@ def cssformat(input):
 def htmlformat(input):
     return "```html\n" + input + "```"
 
+@bot.command(name='fkramp', pass_context=True)
+async def fkramp(ctx):
+    url_data = requests.get('http://www.fittkramp.se/svordom/sv/slumpat-ord/').text
+    soup = bs(url_data, 'html.parser')
+    soppa = soup.find("table", class_="box")
+    soppa = soppa.getText()
+    soppa = re.sub("(?s)Inskickat(.*$)", " ", soppa)
+    await bot.say(htmlformat(soppa.lstrip().rstrip))
+
 
 @bot.command(name='hjalp', pass_context=True)
 async def hjalp(ctx):
