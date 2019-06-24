@@ -61,8 +61,8 @@ async def hjalp(ctx):
     embed.add_field(name="!mat", value="Dagens meny på SMHIs stormkök.", inline=False)
     embed.add_field(name="!serverinvite", value="Autogenererad invitelänk till Ninjaz servern, skickas i PM.", inline=False)
     embed.add_field(name="!namn", value="Byter namn på Bengt.", inline=False)
-    embed.add_field(name="!why", value="Randomiserad BOFH reason.", inline=False) 
-    embed.add_field(name="!varn", value="Aktuella SMHI varningar.", inline=False)
+    embed.add_field(name="!why", value="Randomiserad BOFH reason.", inline=False)
+    embed.add_field(name="!fkramp", value="Slumpat ord från fittkramp.se.", inline=False)
     embed.set_thumbnail(url="http://www.2pnews.com/wp-content/uploads/2013/04/hans-freekok.jpg")
     await bot.say(embed=embed)
 
