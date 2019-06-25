@@ -61,7 +61,7 @@ async def hjalp(ctx):
     embed.add_field(name="!mat", value="Dagens meny på SMHIs stormkök.", inline=False)
     embed.add_field(name="!serverinvite", value="Autogenererad invitelänk till Ninjaz servern, skickas i PM.", inline=False)
     embed.add_field(name="!namn", value="Byter namn på Bengt.", inline=False)
-    embed.add_field(name="!why", value="Randomiserad BOFH reason.", inline=False)
+    embed.add_field(name="!why", value="Randomiserad BOFH anledning.", inline=False)
     embed.add_field(name="!fkramp", value="Slumpat ord från fittkramp.se.", inline=False)
     embed.set_thumbnail(url="http://www.2pnews.com/wp-content/uploads/2013/04/hans-freekok.jpg")
     await bot.say(embed=embed)
@@ -139,14 +139,6 @@ async def polis(ctx, *, arg):
         name = i['name']
         sum = i['summary']
         await bot.say("%s %s" % (name, sum))
-
-
-@bot.command(name='varn', pass_context=True)
-async def varn(ctx):
-    adress = 'https://opendata-download-warnings.smhi.se/api/version/2/messages.json'
-    output = requests.get(adress).json()
-    output = json.dumps(output)
-    await bot.say(htmlformat(output['message']['text']))
 
 
 @bot.command(name='blocket', pass_context=True)
