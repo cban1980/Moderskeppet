@@ -95,7 +95,7 @@ async def tobbe(ctx):
     soup = bs(url_data, 'html.parser')
     maten = soup.find("div", class_ = "ParagraphContainer")
     maten = maten.getText().rstrip().lstrip()
-    maten = re.sub("(?s)99(.*$)", " ", maten)
+    maten = re.sub("(?s)100(.*$)", " ", maten)
     await bot.say(htmlformat(maten))
 
 
