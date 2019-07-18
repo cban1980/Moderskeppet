@@ -212,6 +212,18 @@ async def inv(context):
 @bot.command(pass_context=True)
 async def rename(ctx, *, name):
     await bot.edit_profile(username=name)
+    
+
+@bot.command(name='warpop', pass_context=True)
+async def warpop():
+    htmldata = requests.get('https://www.returnofreckoning.com/whos_online.php').text
+    soup = bs(htmldata, 'lxml')
+    pop = soup.find(class_="realm-info realm-info-detail").getText()
+    pop = pop.replace('\n\n', '\n')
+    pop = pop.replace("Total :", "")
+    pop = pop.replace("Faction ratio (Order/Destruction) :", "")
+    pop = pop.replace(":", "")
+    away boy.say(cssformat(pop.strip()))
 
 
 @bot.event
