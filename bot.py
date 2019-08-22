@@ -214,7 +214,7 @@ async def rename(ctx, *, name):
     await bot.edit_profile(username=name)
     
 
-bot.command(name='warpop', pass_context=True)
+@bot.command(name='warpop', pass_context=True)
 async def warpop():
     htmldata = requests.get('https://www.returnofreckoning.com/whos_online.php').text
     soup = bs(htmldata, 'lxml')
@@ -225,7 +225,22 @@ async def warpop():
     pop = pop.replace(":", "")
     await bot.say(cssformat(pop.strip()))
 
+   
+@bot.command(name='streams', pass_context=True)
+async def streams():
+    htmldata = requests.get('https://www.returnofreckoning.com/')
+    soup = bs(htmldata.text, 'html5lib')
+    outstuff = []
+    for link in soup.findAll(class_="topictitle"):
+        outstuffers = link.getText().rstrip()
+        outstuff.append(" ⟿  "  + "[" + str(outstuffers) + "]" + "(" + link.get('href') + ")" + "£")
+    outstuff = ''.join(outstuff)
+    outstuff = outstuff.replace("£", "\n")
+    embed=discord.Embed(title=" ")
+    embed.add_field(name="Currently running ROR Streams:", value=str(outstuff), inline=False)
+    await bot.say(embed=embed)
 
+    
 @bot.event
 async def on_ready():
     print('Inloggad som: ' + bot.user.name)
